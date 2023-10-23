@@ -1,0 +1,3 @@
+﻿  cross.cpp
+C:\Users\SBSGAME\source\repos\river_transfer\river_transfer\cross.cpp(45): warning C4715: 'C_CROSS::move': 모든 제어 경로에서 값을 반환하지는 않습니다.
+  river_transfer.vcxproj -> C:\Users\SBSGAME\source\repos\river_transfer\x64\Debug\river_transfer.exe
