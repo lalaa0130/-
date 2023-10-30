@@ -32,6 +32,6 @@ public:
 	void print();
 	void printNode(int nId);
 
-	void make(int nId);
+	void make(int nStart,int nEnd);
 
 };
