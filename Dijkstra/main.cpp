@@ -22,5 +22,6 @@ int main()
 	cDijkstra.addNode(6, 8, 2);
 
 	cDijkstra.print();
+	cDijkstra.make(1,6);
 }
 
