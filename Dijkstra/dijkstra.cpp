@@ -83,50 +83,65 @@ void C_DIJKSTRA::printNode(int nId)
 
 }
 
-void C_DIJKSTRA::make(int nId)
+void C_DIJKSTRA::make(int nStart , int nEnd)
 {
 	S_NODE* pParent{};
-	S_NODE* pNode = m_mapNode.find(nId)->second;
+S_NODE* pNode = m_mapNode.find(nStart)->second;
 
-	std::list<S_NODE*> listNode;
-	listNode.push_back(pNode);
-	pNode->isLogic = true;
+std::list<S_NODE*> listNode;
+listNode.push_back(pNode);
+pNode->isLogic = true;
 
-	while (!listNode.empty())
+while (!listNode.empty())
+{
+	//ê°€ìž¥ ìž‘ì€ ë…¸ë“œë¥¼ ì°¾ëŠ”ë‹¤
+
+	//child ìˆœíšŒ ë°©ë¬¸í•œì  ì´ë©´ pass, isLogicì´ë©´ ê±°ë¦¬ê³„ì‚°í•´ì„œ ì´ê±°ë¦¬ ë¹„êµ ìž‘ìœ¼ë©´ êµì²´ 
+
+	S_NODE* pMinNode = popMinNode(listNode);
+
+	pMinNode->isVisit = true;
+
+
+	////ë°©ë¬¸ ìž…ë ¥
+	for (auto child : pMinNode->children)
 	{
-		//°¡Àå ÀÛÀº ³ëµå¸¦ Ã£´Â´Ù
-
-		//child ¼øÈ¸ ¹æ¹®ÇÑÀû ÀÌ¸é pass, isLogicÀÌ¸é °Å¸®°è»êÇØ¼­ ÃÑ°Å¸® ºñ±³ ÀÛÀ¸¸é ±³Ã¼ 
-
-		S_NODE* pMinNode = popMinNode(listNode);
-
-		pMinNode->isVisit = true;
-
-		//ÇØ´ç ³ëµå¸¦ Ç¥±â
-		//pMinNode->nTotalLength += MinPair->second;
-		//pMinNode->isLogic = true;
-
-		//// ºÎ¸ð³ëµå ÀÔ·Â
-		//pMinNode->pParent = pNode;
-
-		////¹æ¹® ÀÔ·Â
-		for (auto child : pNode->children)
+		S_NODE* pChildNode = child.first;
+		int nChildLength = child.second + pMinNode->nTotalLength;
+		/*if (!pChildNode->isVisit && !pChildNode->isLogic || pChildNode->nTotalLength > nChildLength)
 		{
-			if (child.first->isVisit)
-			{}
-			else if (child.first->isLogic)
+			if (!pChildNode->isLogic)
+				listNode.push_back(pChildNode);
+
+			pChildNode->pParent = pMinNode;
+			pChildNode->nTotalLength = nChildLength;
+			pChildNode->isLogic = true;
+		}*/
+
+		if (!pChildNode->isVisit)
+		{
+			if (!pChildNode->isLogic)
+				listNode.push_back(pChildNode);
+
+			if (pChildNode->nTotalLength == 0 || pChildNode->nTotalLength > nChildLength)
 			{
-				if (child.first->nTotalLength > (pMinNode->nTotalLength+ child.second))
-					child.first->pParent = pMinNode;
+				pChildNode->nTotalLength = nChildLength;
+				pChildNode->pParent = pMinNode;
 			}
-			else
-			{
-				child.first->isLogic = true;
-				listNode.push_back(child.first);
-			}
+			pChildNode->isLogic = true;
+
 		}
-			
 	}
+		
+}
+
+S_NODE* pEndNode = m_mapNode.find(nEnd)->second;
+while (pEndNode)
+{
+	printf("%d ", pEndNode->nId);
+	pEndNode = pEndNode->pParent;
+}
+
 
 
 }
